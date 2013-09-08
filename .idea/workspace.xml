@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f35bfe89-8a0a-4b9b-a7a5-71aa7dc149ac" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/app.html" afterPath="$PROJECT_DIR$/client/views/app.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/code/app/entry.js" afterPath="$PROJECT_DIR$/client/code/app/entry.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/code/app/event-handlers.js" afterPath="$PROJECT_DIR$/client/code/app/event-handlers.js" />
     </list>
     <ignored path="andaaza.iws" />
@@ -13,12 +11,12 @@
     <file path="/a.dummy" changelist="f35bfe89-8a0a-4b9b-a7a5-71aa7dc149ac" time="1378100866014" ignored="false" />
     <file path="/story-model.js" changelist="f35bfe89-8a0a-4b9b-a7a5-71aa7dc149ac" time="1378093225872" ignored="false" />
     <file path="/click-handlers.js" changelist="f35bfe89-8a0a-4b9b-a7a5-71aa7dc149ac" time="1378094281987" ignored="false" />
-    <file path="/event-handlers.js" changelist="f35bfe89-8a0a-4b9b-a7a5-71aa7dc149ac" time="1378623829425" ignored="false" />
+    <file path="/event-handlers.js" changelist="f35bfe89-8a0a-4b9b-a7a5-71aa7dc149ac" time="1378628882428" ignored="false" />
     <file path="$USER_HOME$/project/movie-night-hack/client/code/app/app.js" changelist="f35bfe89-8a0a-4b9b-a7a5-71aa7dc149ac" time="1378095002786" ignored="false" />
     <file path="/app.js" changelist="f35bfe89-8a0a-4b9b-a7a5-71aa7dc149ac" time="1378094943445" ignored="false" />
     <file path="$USER_HOME$/project/movie-night-hack/client/code/app/entry.js" changelist="f35bfe89-8a0a-4b9b-a7a5-71aa7dc149ac" time="1378101459368" ignored="false" />
     <file path="/model-computations.js" changelist="f35bfe89-8a0a-4b9b-a7a5-71aa7dc149ac" time="1378104008333" ignored="false" />
-    <file path="/fragment.js2" changelist="f35bfe89-8a0a-4b9b-a7a5-71aa7dc149ac" time="1378190905223" ignored="false" />
+    <file path="/fragment.js2" changelist="f35bfe89-8a0a-4b9b-a7a5-71aa7dc149ac" time="1378626215109" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,12 +50,11 @@
           <file leaf-file-name="event-handlers.js" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/client/code/app/event-handlers.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="47" column="63" selection-start="1123" selection-end="1123" vertical-scroll-proportion="0.5390173">
+                <state line="60" column="76" selection-start="1489" selection-end="1489" vertical-scroll-proportion="0.44527736">
                   <folding>
                     <element signature="n#!!block;n#estimateCalculator#0" expanded="false" />
                     <element signature="n#!!block;n#stdCalculator#0" expanded="false" />
                     <element signature="n#!!block;n#confidenceEstimateCalculator#0" expanded="false" />
-                    <element signature="e#468#977#0" expanded="false" />
                   </folding>
                 </state>
               </provider>
@@ -410,7 +407,6 @@
             <element signature="n#!!block;n#estimateCalculator#0" expanded="false" />
             <element signature="n#!!block;n#stdCalculator#0" expanded="false" />
             <element signature="n#!!block;n#confidenceEstimateCalculator#0" expanded="false" />
-            <element signature="e#468#977#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -495,12 +491,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/client/code/app/event-handlers.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="47" column="63" selection-start="1123" selection-end="1123" vertical-scroll-proportion="0.5390173">
+        <state line="60" column="76" selection-start="1489" selection-end="1489" vertical-scroll-proportion="0.44527736">
           <folding>
             <element signature="n#!!block;n#estimateCalculator#0" expanded="false" />
             <element signature="n#!!block;n#stdCalculator#0" expanded="false" />
             <element signature="n#!!block;n#confidenceEstimateCalculator#0" expanded="false" />
-            <element signature="e#468#977#0" expanded="false" />
           </folding>
         </state>
       </provider>

@@ -40,12 +40,12 @@ $('.add-story').bind("click", function(){
             class: "tasks-container span9"
     }).appendTo(storyContainerDiv);
 
-    createNewTask(tasksContainerDiv);
+    createNewTask(tasksContainerDiv, null);
 });
 
 $(document).ready(function() {
     $('body').on('click', '.add-task', function() {
-        createNewTask($(this).closest('.tasks-container'));
+        createNewTask($(this).closest('.tasks-container'), this);
     });
 
     $('body').on('click', '.remove-task', function() {
@@ -57,12 +57,23 @@ $(document).ready(function() {
     });
 });
 
-function createNewTask(tasksContainerDiv) {
-    // create new task div (parent row for every task)
-    var taskContainerDiv = $("<div/>", {
-        class:  "task-container row-fluid"
-    }).appendTo(tasksContainerDiv);
+function createNewTask(tasksContainerDiv, anchorReference) {
 
+    var taskContainerDiv;
+    //first check if task has to be inserted in between two task
+    if(anchorReference != null &&
+        $(anchorReference).closest('.task-container').next().children().length > 0 )
+    {
+        var div = $("<div/>", {
+            class:  "task-container row-fluid"
+        });
+        taskContainerDiv = div.insertAfter($(anchorReference).closest('.task-container'));
+    } else {
+        // create new task div (parent row for every task)
+        taskContainerDiv = $("<div/>", {
+            class:  "task-container row-fluid"
+        }).appendTo(tasksContainerDiv);
+    }
     // create task title div container and text box for title
     setInputElements(
         taskContainerDiv,
