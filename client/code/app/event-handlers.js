@@ -1,223 +1,3 @@
-function andaaza(){
-    this.stories = new Array();
-    this.title = null;
-
-    this.setTitle = function(title) {
-        this.title = title;
-    }
-
-    this.setStories = function(stories) {
-        this.stories = stories;
-    }
-
-    this.getStory = function(i) {
-        return this.stories[i];
-    }
-
-    this.deleteStory = function(story) {
-        this.stories.splice( $.inArray(story, this.stories), 1 );
-    }
-
-    this.newStoryAtEnd = function(story){
-        var size = this.stories.length;
-        this.stories[size] = story;
-    }
-
-    this.insertNewStory = function(story, pos) {
-        for (var i = this.stories.length ; i >= pos; i--) {
-            this.stories[i] = this.stories[i-1];
-        }
-        this.stories[pos-1] = story;
-    }
-}
-
-function setInputElements(id,parentEl,name,placeholder,width,span) {
-    $("<div/>",{
-        id: id,
-        class: span
-    }).appendTo(parentEl);
-
-    var element = $("<input/>", {
-        name:   name,
-        id:     id,
-        placeholder:  placeholder,
-        class:  width,
-        type:   "text"
-    }).appendTo("#"+id);
-
-    return element;
-}
-
-function taskCrudOperations(newTask) {
-    newTask.crudDiv = $("<div/>", {
-        id: newTask.id + "-crud",
-        class: "span1"
-    }).appendTo(newTask.taskDiv);
-
-    newTask.setRemoveTaskButton($("<a/>", {
-        href: "#",
-        class: "btn btn-mini btn-primary remove-task",
-        text: "-",
-        style: "margin-right: 2px",
-        id: newTask.id + "-crud"
-    }).appendTo(newTask.crudDiv));
-
-    newTask.setCreateNewTaskButton($("<a/>", {
-        href: "#",
-        class: "btn btn-mini btn-primary add-task",
-        text: "+",
-        id: newTask.id + "-crud"
-    }).appendTo(newTask.crudDiv));
-
-    newTask.createNewTaskButon.bind("click", function () {
-        var id = $(this).attr("id");
-        var storyIndex = id.split("-")[1];
-        var taskIndex = id.split("-")[3];
-        var story = report.stories[storyIndex];
-        story.newTaskAtEnd(story);
-    });
-
-    newTask.removeTaskButton.bind("click", function () {
-        var id = $(this).attr("id");
-        var storyIndex = id.split("-")[1];
-        var taskIndex = id.split("-")[3];
-        var story = report.stories[storyIndex];
-        var task = story.tasks[taskIndex];
-        story.deleteTask(task);
-    });
-}
-function story() {
-    this.title = null;
-    this.tasks = new Array();
-    this.id = null;
-    this.storyDiv = null;
-    this.tasksDiv = null;
-
-    this.setstoryDiv = function(div) {
-        this.storyDiv = div;
-    }
-
-    this.setId = function (id) {
-        this.id = id;
-    }
-
-    this.setTitle = function (title) {
-        if(this.title == null) {
-            alert("Please enter a story title");
-        }
-    }
-
-    this.setTasks = function (tasks) {
-        this.tasks = tasks;
-    }
-
-    this.getTask = function(i) {
-        return this.tasks[i];
-    }
-
-    this.deleteTask = function(task) {
-        // first remove the display elements
-        task.taskDiv.remove();
-
-        // them remove the task from tasks[]
-        this.tasks.splice( $.inArray(task, this.tasks), 1 );
-    }
-
-    this.newTaskAtEnd = function(story){
-        var newTask = new task();
-        var size = this.tasks.length;
-        this.tasks[size] = newTask;
-
-        newTask.setId(this.id+"-task-"+size);
-
-        // create new task div (parent row for every task)
-        newTask.taskDiv = $("<div/>", {
-		    class:  "row-fluid"
-        }).appendTo(this.tasksDiv);
-
-        // create task div container and text box for title
-        newTask.eltitle = setInputElements(
-            newTask.id+"-title",
-            newTask.taskDiv,
-            "task-title",
-            "Enter title for task - " + this.tasks.length,
-            "input-xlarge",
-            "span4");
-
-        taskCrudOperations(newTask);
-        newTask.elbestestimate = setInputElements(newTask.id+"-be", newTask.taskDiv, "be", "0","input-mini","span1");
-        newTask.ellestestimate = setInputElements(newTask.id+"-le", newTask.taskDiv, "le", "0","input-mini","span1");
-        newTask.elwestestimate = setInputElements(newTask.id+"-we", newTask.taskDiv, "we", "0","input-mini","span1");
-        newTask.elaestestimate = setInputElements(newTask.id+"-ae", newTask.taskDiv, "ae", "0","input-mini","span1");
-        newTask.elstdstestimate = setInputElements(newTask.id+"-std", newTask.taskDiv, "std", "0","input-mini","span1");
-        newTask.elcfdstestimate = setInputElements(newTask.id+"-cfd", newTask.taskDiv, "cfd", "0","input-mini","span1");
-    }
-}
-
-function task() {
-    this.title = null;
-    this.bestestimate = null;
-    this.likelyestimate = null;
-    this.worstestimate = null;
-    this.avgestimate = null;
-    this.stddeviation = null;
-    this.confidence = null;
-    this.id = null;
-    this.taskDiv = null;
-    this.crudDiv = null;
-
-    //display elements
-    this.eltitle = null;
-    this.createNewTaskButton = null;
-    this.removeTaskButton = null;
-    this.elbestestimate = null;
-    this.ellikelyestimate = null;
-    this.elworstestimate = null;
-    this.elavgestimate = null;
-    this.elstddeviation = null;
-    this.elconfidence = null;
-
-    this.setCreateNewTaskButton = function(btn) {
-        this.createNewTaskButon = btn;
-    }
-
-    this.setRemoveTaskButton = function(btn) {
-        this.removeTaskButton = btn;
-    }
-
-    this.setId = function (id) {
-        this.id = id;
-    }
-
-    this.setTitle = function(title) {
-        this.title = title;
-    }
-
-    this.setBestestimate = function(be){
-        this.bestestimate = be;
-    }
-
-    this.setLikelyestimate = function(le){
-        this.likelyestimate = le;
-    }
-
-    this.setWorstestimate = function(we){
-        this.worstestimate = we;
-    }
-
-    this.setAvgestimate = function(ae){
-        this.avgestimate = ae;
-    }
-
-    this.setStddeviation = function(sd){
-        this.stddeviation = sd;
-    }
-
-    this.setConfidence = function(cfd){
-        this.confidence = cfd;
-    }
-}
-
 function estimateCalculator(be, le, we) {
 
 }
@@ -236,46 +16,99 @@ var divSuffix = "-title";
 
 $(".create-report").bind("click", function() {
     var title = $( "input[name='report-title']").val();
-    report = new andaaza();
-    report.setTitle(title);
 });
 
 $(".delete-story").bind("click", function() {
-    var story = report.stories[report.stories.length - 1];
-    story.storyDiv.remove();
-    report.deleteStory(story);
-    console.log("delete story");
+    $('.story-container:last').remove();
 });
 
 $('.add-story').bind("click", function(){
-
-    // create new story and attach to report
-    var newStory = new story();
-    var numStories = report.stories.length;
-    newStory.setId("story-" + numStories);
-    report.newStoryAtEnd(newStory);
-
     // create new story div
-    newStory.setstoryDiv($("<div/>", {
-        id: newStory.id
-    }).appendTo(".stories"));
+    var storyContainerDiv = ($("<div/>", {
+        class: "story-container"
+    }).appendTo(".stories-container"));
 
     setInputElements(
-        newStory.id+"-title",
-        newStory.storyDiv,
+        storyContainerDiv,
+        "story-title-container span3",
         "story-title",
-        "Enter title for Story - " + report.stories.length,
-        "input-xlarge",
-        "span3");
+        "Enter title for New Story",
+        "input-xlarge");
 
     //create new tasks div
-    newStory.tasksDiv = $("<div/>", {
-            id: newStory.id+"-tasks",
-            class: "span9"
-    }).appendTo(newStory.storyDiv);
+    var tasksContainerDiv = $("<div/>", {
+            class: "tasks-container span9"
+    }).appendTo(storyContainerDiv);
 
-
-    newStory.newTaskAtEnd();
-    console.log("new story");
+    createNewTask(tasksContainerDiv);
 });
 
+$(document).ready(function() {
+    $('body').on('click', '.add-task', function() {
+        createNewTask($(this).closest('.tasks-container'));
+    });
+
+    $('body').on('click', '.remove-task', function() {
+        if($(this).closest('.tasks-container').children().length == 1) {
+            $(this).closest('.story-container').remove();
+        } else {
+            $(this).closest('.task-container').remove();
+        }
+    });
+});
+
+function createNewTask(tasksContainerDiv) {
+    // create new task div (parent row for every task)
+    var taskContainerDiv = $("<div/>", {
+        class:  "task-container row-fluid"
+    }).appendTo(tasksContainerDiv);
+
+    // create task title div container and text box for title
+    setInputElements(
+        taskContainerDiv,
+        "task-title-container span4",
+        "task-title",
+        "Enter title for new task",
+        "input-xlarge");
+
+    taskCrudOperations(taskContainerDiv);
+
+    setInputElements(taskContainerDiv, "be-container span1", "be", "0","input-mini");
+    setInputElements(taskContainerDiv, "le-container span1", "le", "0","input-mini");
+    setInputElements(taskContainerDiv, "we-container span1", "we", "0","input-mini");
+    setInputElements(taskContainerDiv, "ae-container span1", "ae", "0","input-mini");
+    setInputElements(taskContainerDiv, "std-container span1", "std", "0","input-mini");
+    setInputElements(taskContainerDiv, "cfd-container span1", "cfd", "0","input-mini");
+}
+
+function setInputElements(container,innerContainerClass,inputName,placeholder,width) {
+    var wrapperDiv = $("<div/>",{
+        class: innerContainerClass
+    }).appendTo(container);
+
+    var element = $("<input/>", {
+        name:   inputName,
+        placeholder:  placeholder,
+        class:  width,
+        type:   "text"
+    }).appendTo(wrapperDiv);
+}
+
+function taskCrudOperations(taskContainerDiv) {
+    var crudContainerDiv = $("<div/>", {
+        class: "task-crud-container span1"
+    }).appendTo(taskContainerDiv);
+
+    $("<a/>", {
+        href: "#",
+        class: "btn btn-mini btn-primary remove-task",
+        text: "-",
+        style: "margin-right: 2px"
+    }).appendTo(crudContainerDiv);
+
+    $("<a/>", {
+        href: "#",
+        class: "btn btn-mini btn-primary add-task",
+        text: "+"
+    }).appendTo(crudContainerDiv);
+}
