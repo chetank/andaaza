@@ -1,15 +1,3 @@
-function estimateCalculator(be, le, we) {
-
-}
-
-function stdCalculator(be, le, we) {
-
-}
-
-function confidenceEstimateCalculator(be, le, we, ae, std) {
-
-}
-
 var report = null;
 var divPrefix = "container-";
 var divSuffix = "-title";
@@ -28,12 +16,7 @@ $('.add-story').bind("click", function(){
         class: "story-container"
     }).appendTo(".stories-container"));
 
-    setInputElements(
-        storyContainerDiv,
-        "story-title-container span3",
-        "story-title",
-        "Enter title for New Story",
-        "input-xlarge");
+    setInputElements(storyContainerDiv, "story-title-container span3", "story-title", "Enter title for New Story", "input-xlarge", false);
 
     //create new tasks div
     var tasksContainerDiv = $("<div/>", {
@@ -55,6 +38,25 @@ $(document).ready(function() {
             $(this).closest('.task-container').remove();
         }
     });
+
+
+    /*var tallyContainerDiv = ($("<div/>", {
+        class: "tally-container row-fluid text-center"
+    }).before('.stories-container'));
+
+    var tallyTitleContainerDiv = ($("<div/>", {
+        class: "span3"
+    }).before('.stories-container'));
+
+    setInputElements(
+        tallyTitleContainerDiv,
+        "tally-title-container",
+        "tally-title",
+        "Running Tally of Estimates",
+        "input-xlarge"
+    );
+    */
+
 });
 
 function createNewTask(tasksContainerDiv, anchorReference) {
@@ -75,34 +77,72 @@ function createNewTask(tasksContainerDiv, anchorReference) {
         }).appendTo(tasksContainerDiv);
     }
     // create task title div container and text box for title
-    setInputElements(
-        taskContainerDiv,
-        "task-title-container span4",
-        "task-title",
-        "Enter title for new task",
-        "input-xlarge");
+    setInputElements(taskContainerDiv, "task-title-container span4", "task-title", "Enter title for new task", "input-xlarge", false);
 
     taskCrudOperations(taskContainerDiv);
 
-    setInputElements(taskContainerDiv, "be-container span1", "be", "0","input-mini");
-    setInputElements(taskContainerDiv, "le-container span1", "le", "0","input-mini");
-    setInputElements(taskContainerDiv, "we-container span1", "we", "0","input-mini");
-    setInputElements(taskContainerDiv, "ae-container span1", "ae", "0","input-mini");
-    setInputElements(taskContainerDiv, "std-container span1", "std", "0","input-mini");
-    setInputElements(taskContainerDiv, "cfd-container span1", "cfd", "0","input-mini");
+    setInputElements(taskContainerDiv, "estimates be-container span1", "be", "0", "input-mini", false);
+    setInputElements(taskContainerDiv, "estimates le-container span1", "le", "0", "input-mini", false);
+    setInputElements(taskContainerDiv, "estimates we-container span1", "we", "0", "input-mini", false);
+    setInputElements(taskContainerDiv, "calc-estimates ae-container span1", "ae", "0", "input-mini", true);
+    setInputElements(taskContainerDiv, "calc-estimates std-container span1", "std", "0", "input-mini", true);
+    setInputElements(taskContainerDiv, "calc-estimates cfd-container span1", "cfd", "0", "input-mini", true);
 }
 
-function setInputElements(container,innerContainerClass,inputName,placeholder,width) {
+function setInputElements(container, innerContainerClass, inputName, placeholder, width, disabled) {
     var wrapperDiv = $("<div/>",{
         class: innerContainerClass
     }).appendTo(container);
 
-    var element = $("<input/>", {
+    $("<input/>", {
         name:   inputName,
         placeholder:  placeholder,
         class:  width,
-        type:   "text"
-    }).appendTo(wrapperDiv);
+        type:   "text",
+        disabled: disabled
+    }).appendTo(wrapperDiv).on('input', function() {
+            calculateSingleTaskEstimates(this);
+        });
+}
+
+function estimateCalculator(be, le, we) {
+
+}
+
+function stdCalculator(be, le, we) {
+
+}
+
+function updateTally() {
+    var sumOfAllBe = 0;
+
+    $("input[name='be']").each(function() {
+        sumOfAllBe += Number($(this).val());
+    });
+
+    var sumOfAllWe = 0;
+    $("input[name='we']").each(function() {
+        sumOfAllWe += Number($(this).val());
+    });
+}
+
+function calculateSingleTaskEstimates(estimateInputObj) {
+    //get all three values for the task that was just updated
+    var estimates = $(estimateInputObj).closest('.task-container');
+
+    var be = estimates.find('input[name=be]').val();
+    var le = estimates.find('input[name=le]').val();
+    var we = estimates.find('input[name=we]').val();
+
+    if (be != '' && le != '' && we != '') {
+        var ae = ((parseFloat(be) + 4*parseFloat(le) + parseFloat(we))/6).toFixed(2);
+        var std = ((parseFloat(we) - parseFloat(be)) / 6).toFixed(2);
+        var cfd = parseFloat(ae) + 2*parseFloat(std);
+
+        estimates.find('input[name=ae]').val(ae);
+        estimates.find('input[name=std]').val(std);
+        estimates.find('input[name=cfd]').val(cfd);
+    }
 }
 
 function taskCrudOperations(taskContainerDiv) {

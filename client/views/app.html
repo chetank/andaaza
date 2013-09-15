@@ -15,12 +15,27 @@
 	</head>
 	<body>
 
-    <div class="”container”">
-        <h3><a href="”#”">Andaaza: 3 Point Estimates Tool</a></h3>
+    <!-- navigation bar-->
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container-fluid">
+                <a class="brand" href="#">Dev Happy Tools</a>
+                <ul class="nav">
+                    <li><a href="#">Andaaza</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
+    <div class="”container”">
         <div class="hero-unit">
+            <h3><a href="”#”">Andaaza: 3 Point Estimates Tool</a></h3>
+            <input class="login-name input-medium"
+                   type="text" placeholder="Your Alias"/>
             <input class="report-title input-xlarge"
-                   type="text" placeholder="Enter a title for your report"/>
+                   type="text" placeholder="Your Report Title"/>
+            <input class="report-title input-xlarge"
+                   type="text" placeholder="Mail report to: e-mail address"/>
             <a href="#" class="btn btn-primary create-report">Save</a>
 
             <div>
@@ -42,6 +57,9 @@
                         <div class="span1"><span class="label label-important">95% Conf. Estimate</span></div>
                     </div>
                 </div>
+            </div>
+
+            <div class="total-tally-container row-fluid text-center">
             </div>
 
             <div class="stories-container row-fluid text-center">
