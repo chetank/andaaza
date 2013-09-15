@@ -3,7 +3,31 @@ var divPrefix = "container-";
 var divSuffix = "-title";
 
 $(".create-report").bind("click", function() {
-    var title = $( "input[name='report-title']").val();
+    //enable all disabled fields.
+    var disabled = $('form').find(':input:disabled').removeAttr('disabled');
+
+    //serialize the form
+    var array = $('input[type=text]').serialize();
+
+    // re-disabled the set of inputs that you previously enabled
+    disabled.attr('disabled','disabled');
+
+    console.log(array);
+
+    $.ajax({
+        url: "andaaza-launcher.js",
+        data: array,
+        type: "POST",
+        success: function (data) {
+            console.log("response received");
+            console.log(data);
+            var uri = 'data:application/csv;charset=UTF-8,' + encodeURIComponent(data);
+            window.open(uri);
+        },
+        error: function (xhr, status, error) {
+            console.log('Error: ' + error.message);
+        }
+    });
 });
 
 $(".delete-story").bind("click", function() {
@@ -39,24 +63,13 @@ $(document).ready(function() {
         }
     });
 
-
-    /*var tallyContainerDiv = ($("<div/>", {
-        class: "tally-container row-fluid text-center"
-    }).before('.stories-container'));
-
-    var tallyTitleContainerDiv = ($("<div/>", {
-        class: "span3"
-    }).before('.stories-container'));
-
-    setInputElements(
-        tallyTitleContainerDiv,
-        "tally-title-container",
-        "tally-title",
-        "Running Tally of Estimates",
-        "input-xlarge"
-    );
-    */
-
+    var tallyEstimates = $('.tally-estimates');
+    setInputElements(tallyEstimates, "tally-estimates be-container span1", "tbe", "0", "input-mini", true);
+    setInputElements(tallyEstimates, "tally-estimates le-container span1", "tle", "0", "input-mini", true);
+    setInputElements(tallyEstimates, "tally-estimates we-container span1", "twe", "0", "input-mini", true);
+    setInputElements(tallyEstimates, "tally-estimates ae-container span1", "tae", "0", "input-mini", true);
+    setInputElements(tallyEstimates, "tally-estimates std-container span1", "tstd", "0", "input-mini", true);
+    setInputElements(tallyEstimates, "tally-estimates cfd-container span1", "tcfd", "0", "input-mini", true);
 });
 
 function createNewTask(tasksContainerDiv, anchorReference) {
@@ -105,25 +118,39 @@ function setInputElements(container, innerContainerClass, inputName, placeholder
         });
 }
 
-function estimateCalculator(be, le, we) {
-
-}
-
-function stdCalculator(be, le, we) {
-
-}
-
 function updateTally() {
     var sumOfAllBe = 0;
+    var sumOfAllLe = 0;
+    var sumOfAllWe = 0;
+    var sumOfAllAe = 0;
+    var sumOfAllStd = 0;
+    var sumOfAllCfd = 0;
 
     $("input[name='be']").each(function() {
         sumOfAllBe += Number($(this).val());
     });
-
-    var sumOfAllWe = 0;
+    $("input[name='le']").each(function() {
+        sumOfAllLe += Number($(this).val());
+    });
     $("input[name='we']").each(function() {
         sumOfAllWe += Number($(this).val());
     });
+    $("input[name='ae']").each(function() {
+        sumOfAllAe += Number($(this).val());
+    });
+    $("input[name='std']").each(function() {
+        sumOfAllStd += Number($(this).val());
+    });
+    $("input[name='cfd']").each(function() {
+        sumOfAllCfd += Number($(this).val());
+    });
+
+    $('input[name=tbe]').val(sumOfAllBe);
+    $('input[name=tle]').val(sumOfAllLe);
+    $('input[name=twe]').val(sumOfAllWe);
+    $('input[name=tae]').val(sumOfAllAe);
+    $('input[name=tstd]').val(sumOfAllStd);
+    $('input[name=tcfd]').val(sumOfAllCfd);
 }
 
 function calculateSingleTaskEstimates(estimateInputObj) {
@@ -143,6 +170,8 @@ function calculateSingleTaskEstimates(estimateInputObj) {
         estimates.find('input[name=std]').val(std);
         estimates.find('input[name=cfd]').val(cfd);
     }
+
+    updateTally();
 }
 
 function taskCrudOperations(taskContainerDiv) {

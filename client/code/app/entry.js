@@ -12,7 +12,6 @@ ss.server.on('disconnect', function(){
 	});
 
 ss.server.on('ready', function(){
-
 	// Wait for the DOM to finish loading
 	jQuery(function(){
 		// Load app

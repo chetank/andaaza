@@ -8,12 +8,54 @@ var http = require('http'),
 ss.client.define('main', {
     view: 'app.html',
     css:  ['style.css','bootstrap.min.css','jquery-ui-1.10.3.custom.css'],
-    code: ['libs/jquery.min.js','libs/jquery-ui-1.10.3.custom.js','app'],
+    code: ['libs/jquery.min.js','libs/jquery-ui-1.10.3.custom.js','libs/json2.js','app'],
     tmpl: '*'
 });
 
 // Serve this client on the root URL
 ss.http.route('/', function(req, res){
+    req.on('data', function(data) {
+        console.log("Received body data:");
+        console.log(data.toString());
+
+        // save report in s3
+
+        // e-mail report as csv file
+        var csvString = "";
+        var arr = data.toString().split("&");
+        for(var i=0;i<arr.length;i++) {
+
+            var label = arr[i].split("=")[0];
+            var val = arr[i].split("=")[1];
+
+            switch (label){
+                case "story-title":
+                    csvString = csvString + val;
+                    break;
+                case "task-title":
+                    csvString = csvString + "," + val;
+                    break;
+                case "cfd":
+                    csvString = csvString + "," + val + "\n";
+                    break;
+                case "tbe":
+                    csvString = csvString + "Total,," + val;
+                    break;
+                default :
+                    csvString = csvString + "," + val;
+            }
+        }
+
+        console.log(csvString);
+
+        res.writeHead(200, { 'Content-Type': 'text/plain' });
+        res.write(csvString);
+        res.end();
+
+        // list all past reports by user
+
+        // delete/update past reports by user
+    });
     res.serveClient('main');
 });
 
@@ -26,6 +68,7 @@ if (ss.env === 'production') ss.client.packAssets();
 // Start web server
 //var server = http.Server(options, ss.http.middleware);
 var server = http.Server(ss.http.middleware);
+
 server.listen(8080);
 
 // Start SocketStream
