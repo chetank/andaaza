@@ -15,7 +15,7 @@ $(".create-report").bind("click", function() {
     console.log(array);
 
     $.ajax({
-        url: "andaaza-launcher.js",
+        url: "/andaaza",
         data: array,
         type: "POST",
         success: function (data) {
@@ -61,6 +61,7 @@ $(document).ready(function() {
         } else {
             $(this).closest('.task-container').remove();
         }
+        updateTally(); //since a task has been deleted, it's estimates have to be removed from overall tally
     });
 
     var tallyEstimates = $('.tally-estimates');
@@ -92,7 +93,7 @@ function createNewTask(tasksContainerDiv, anchorReference) {
     // create task title div container and text box for title
     setInputElements(taskContainerDiv, "task-title-container span4", "task-title", "Enter title for new task", "input-xlarge", false);
 
-    taskCrudOperations(taskContainerDiv);
+    taskCreateDeleteButtonHandlers(taskContainerDiv);
 
     setInputElements(taskContainerDiv, "estimates be-container span1", "be", "0", "input-mini", false);
     setInputElements(taskContainerDiv, "estimates le-container span1", "le", "0", "input-mini", false);
@@ -169,12 +170,12 @@ function calculateSingleTaskEstimates(estimateInputObj) {
         estimates.find('input[name=ae]').val(ae);
         estimates.find('input[name=std]').val(std);
         estimates.find('input[name=cfd]').val(cfd);
+        updateTally();
     }
-
-    updateTally();
 }
 
-function taskCrudOperations(taskContainerDiv) {
+// This function deploys 2 buttons to create or delete a task
+function taskCreateDeleteButtonHandlers(taskContainerDiv) {
     var crudContainerDiv = $("<div/>", {
         class: "task-crud-container span1"
     }).appendTo(taskContainerDiv);

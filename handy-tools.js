@@ -4,16 +4,23 @@ var http = require('http'),
     fs = require('fs'),
     ss = require('socketstream');
 
+ss.client.define('andaaza', {
+    view: 'andaaza.html',
+    css:  ['style.css','bootstrap.min.css','jquery-ui-1.10.3.custom.css'],
+    code: ['libs/jquery.min.js','libs/jquery-ui-1.10.3.custom.js','libs/json2.js','app'],
+    tmpl: '*'
+});
+
 // Define a single-page client called 'main'
-ss.client.define('main', {
-    view: 'app.html',
+ss.client.define('discovery', {
+    view: 'discovery.html',
     css:  ['style.css','bootstrap.min.css','jquery-ui-1.10.3.custom.css'],
     code: ['libs/jquery.min.js','libs/jquery-ui-1.10.3.custom.js','libs/json2.js','app'],
     tmpl: '*'
 });
 
 // Serve this client on the root URL
-ss.http.route('/', function(req, res){
+ss.http.route('/andaaza', function(req, res){
     req.on('data', function(data) {
         console.log("Received body data:");
         console.log(data.toString());
@@ -56,7 +63,13 @@ ss.http.route('/', function(req, res){
 
         // delete/update past reports by user
     });
-    res.serveClient('main');
+    res.serveClient('andaaza');
+});
+
+// Serve this client on the root URL
+ss.http.route('/discovery', function(req, res){
+    req.on('data', function(data) {});
+    res.serveClient('discovery');
 });
 
 // Use server-side compiled Hogan (Mustache) templates. Others engines available
@@ -69,7 +82,7 @@ if (ss.env === 'production') ss.client.packAssets();
 //var server = http.Server(options, ss.http.middleware);
 var server = http.Server(ss.http.middleware);
 
-server.listen(8080);
+server.listen(80);
 
 // Start SocketStream
 ss.start(server);
