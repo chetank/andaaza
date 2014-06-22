@@ -7,16 +7,25 @@ $(".create-report").bind("click", function() {
     var disabled = $('form').find(':input:disabled').removeAttr('disabled');
 
     //serialize the form
-    var array = $('input[type=text]').serialize();
+    var serializedString = $('input').serialize();
+    var reportTitle = "reportTitle=" + $(".report-title").val();
+    var emailAddress = "emailAddress=" + $(".email-address").val();
+
+    serializedString = serializedString + "&" + reportTitle + "&" + emailAddress;
 
     // re-disabled the set of inputs that you previously enabled
     disabled.attr('disabled','disabled');
 
-    console.log(array);
+    console.log(serializedString);
+
+    $( "form" ).submit(function( event ) {
+        console.log( $( this ).serializeArray() );
+        event.preventDefault();
+    });
 
     $.ajax({
         url: "/andaaza",
-        data: array,
+        data: serializedString,
         type: "POST",
         success: function (data) {
             console.log("response received");
